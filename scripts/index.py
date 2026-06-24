@@ -1,145 +1,51 @@
-import os, re, time, argparse, requests, hashlib, shutil, logging
+import os, re, time, argparse, requests
+import support
+
 from elasticsearch import Elasticsearch
 from datetime import datetime, timezone
 
-import support as support
+utils_packs = {
+    'mikroe_utils_common.7z': 'MikroE common utilities',
+    'preinit.7z': 'Preinit library',
+    'unit_test_lib.7z': 'Unit test library'
+}
 
-def hash_file(filename):
-    """Generate MD5 hash of a file."""
-    hash_md5 = hashlib.md5()
-    with open(filename, "rb") as f:
-        for chunk in iter(lambda: f.read(4096), b""):
-            hash_md5.update(chunk)
-    return hash_md5.hexdigest()
+def increase_patch_version(version):
+    parts = version.split(".")
 
-def hash_directory_contents(directory):
-    """Generate a hash for the contents of a directory."""
-    all_hashes = []
-    for root, dirs, files in os.walk(directory):
-        dirs.sort()  # Ensure directory traversal is in a consistent order
-        files.sort()  # Ensure file traversal is in a consistent order
-        for filename in files:
-            file_path = os.path.join(root, filename)
-            file_hash = hash_file(file_path)
-            all_hashes.append(file_hash)
+    if len(parts) != 3:
+        raise ValueError(f"Invalid version format: {version}")
 
-    # Combine all file hashes into one hash
-    combined_hash = hashlib.md5("".join(all_hashes).encode()).hexdigest()
-    return combined_hash
+    parts[2] = str(int(parts[2]) + 1)
 
-# Gets latest release headers from repository
-def get_headers(api, token):
-    if api:
-        return {
-            'Authorization': f'token {token}',
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
-        }
-    else:
-        return {
-            'Authorization': f'Bearer {token}',
-            'Accept': 'application/octet-stream',
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
-        }
+    return ".".join(parts)
 
-# Function to fetch content as JSON from the link
-def fetch_json_data(download_link, token):
-    """
-    Fetches JSON data from the specified URL using an authorization token and returns it as a dictionary.
-
-    Args:
-        download_link (str): URL from which to fetch the JSON data.
-
-    Returns:
-        tuple: The first element is a dictionary containing the JSON data (or None in case of failure),
-                the second element is an error message or None if no errors occurred.
-    """
-    headers = get_headers(False, token)
-
-    try:
-        response = requests.get(download_link, headers=headers)
-        response.raise_for_status()
-        return response.json(), None
-    except requests.RequestException as e:
-        print(f"Error fetching JSON data: {e}")
-        return None, str(e)
-
-def check_from_index_hash(asset, indexed_items):
-    for item in indexed_items:
-        if asset == item['name']:
-            if 'hash' in item:
-                return item['hash']
-
-    return None
-
-def check_from_index_version(asset, indexed_items):
-    version = None
-    for item in indexed_items:
-        if asset == item['name']:
-            version = item['version']
-            break
-
-    return version
-
-def increment_version(version):
-    major, minor, patch = map(int, version.split('.'))
-    return f"{major}.{minor}.{patch + 1}"
-
-def fetch_current_indexed_version(package_name, indexed_items):
-    for item in indexed_items:
-        if package_name == item['name']:
-            if 'published_at' in item:
-                return item['published_at']
-
-    return None
-
-def fetch_current_indexed_packages(es : Elasticsearch, index_name):
-    # Search query to use
-    query_search = {
-        "size": 5000,
-        "query": {
-            "match_all": {}
-        }
-    }
-
-    # Search the base with provided query
-    num_of_retries = 1
-    while num_of_retries <= 10:
-        try:
-            response = es.search(index=index_name, body=query_search)
-            if not response['timed_out']:
-                break
-        except:
-            print("Executing search query - retry number %i" % num_of_retries)
-        num_of_retries += 1
-
-    all_packages = []
-    for eachHit in response['hits']['hits']:
-        if not 'name' in eachHit['_source']:
-            continue
-        if '_type' in eachHit:
-            if '_doc' == eachHit['_type']:
-                all_packages.append(eachHit['_source'])
-
-    # Sort all_packages alphabetically by the 'name' field
-    all_packages.sort(key=lambda x: x['name'])
-
-    return all_packages
-
-def resolve_publish_date(indexed_items, package_name):
-    for indexed_item in indexed_items:
-        if indexed_item['name'] == package_name:
-            return indexed_item['published_at']
-    # Notify user about failed package
-    print("%sNo release date found for %s!" % (support.Colors.FAIL, package_name))
-    return None
 
 # Function to index release details into Elasticsearch
 def index_release_to_elasticsearch(es, token, assets, index_names):
+    # Get all indexes to go through all of them recursively
+    # index_names = [
+    #     os.environ['ES_INDEX_LIVE'],
+    #     os.environ['ES_INDEX_TEST'],
+    #     os.environ['ES_INDEX_EXPERIMENTAL']
+    # ]
+
     necto_versions = {
-        os.environ['ES_INDEX_LIVE'] : 'dev',                  ## Development NECTO version
-        os.environ['ES_INDEX_TEST'] : 'live',                 ## Live NECTO version
-        os.environ['ES_INDEX_EXPERIMENTAL'] : 'experimental'  ## Experimental NECTO version
+        os.environ['ES_INDEX_LIVE'] : 'live',
+        os.environ['ES_INDEX_TEST'] : 'dev',
+        os.environ['ES_INDEX_EXPERIMENTAL'] : 'experimental'
     }
+
+    indexing_mapping = {
+        os.environ['ES_INDEX_LIVE'] : {},
+        os.environ['ES_INDEX_TEST'] : {},
+        os.environ['ES_INDEX_EXPERIMENTAL'] : {}
+    }
+
+    # Get the current time in UTC
+    current_time = datetime.now(timezone.utc).replace(microsecond=0)
+    # If you specifically want the 'Z' at the end instead of the offset
+    published_at = current_time.isoformat().replace('+00:00', 'Z')
 
     # Fetch metadata contents
     metadata = support.fetch_release_metadata(assets, token)
@@ -147,326 +53,195 @@ def index_release_to_elasticsearch(es, token, assets, index_names):
     # Let's map all the items that we need to index with the index name
     for index_name in index_names:
         # Get all currently indexed items for this index
-        indexed_items = fetch_current_indexed_packages(es, index_name)
+        indexed_items = support.fetch_current_indexed_packages(es, index_name)
 
         # Get all released assets for this index
         for asset in assets:
             doc = None
-            for indexed_item in indexed_items:
-                if asset['name'] == indexed_item['id']:
-                    # Found existing indexed item
-                    return
+            indexed_item = None
+            kibana_id = None
 
-    for asset in assets:
-        doc = None
-        package_name = None
-        name_without_extension = os.path.splitext(os.path.basename(asset['name']))[0]
-        package_id = name_without_extension
-
-        # If it was requested only to index templates - skip all other packages
-        if templates_only and 'templates_' not in name_without_extension:
-            continue
-
-        if 'mikrosdk' == name_without_extension:
-            asset_version_previous = version_index
-            publish_date = published_at
-            doc = {
-                'name': name_without_extension,
-                'display_name': "mikroSDK",
-                'author': 'MIKROE',
-                'hidden': False,
-                'type': 'sdk',
-                'version': version,
-                'created_at' : asset['created_at'],
-                'updated_at' : asset['updated_at'],
-                'published_at': publish_date,
-                'category': 'Software Development Kit',
-                # TODO: temporary edit for version 2.17.5
-                # Used only for version 2.17.5; future versions will be handled by NECTO
-                "dependencies": [
-                    'lvgl_8.3.5_sdk'
-                ],
-                'download_link': asset['browser_download_url'],
-                'download_link_api': asset['url'],
-                'install_location' : "%APPLICATION_DATA_DIR%/packages/sdk",
-                'package_changed': version != version_index,
-                'gh_package_name': "mikrosdk.7z",
-                'link_github': "https://github.com/MikroElektronika/mikrosdk_v2"
-            }
-        elif 'templates' in name_without_extension:
-            if 'test' in index_name:
-                necto_version = necto_versions['test']
-            elif 'live' in index_name:
-                necto_version = necto_versions['live']
-            elif 'experimental' in index_name:
-                necto_version = necto_versions['experimental']
-            if f'templates_{necto_version}' in name_without_extension and f'templates_{necto_version}' != name_without_extension:
-                hash_previous = check_from_index_hash(package_id, indexed_items)
-                hash_new = metadata_content[0]['templates'][package_id]['hash']
-                asset_version_previous = check_from_index_version(package_id, indexed_items)
-                # Assign previous version if it exists, else - make it 1.0.0
-                if asset_version_previous:
-                    asset_version_new = asset_version_previous
-                else:
-                    asset_version_new = '1.0.0'
-                if hash_previous:
-                    if hash_previous != hash_new:
-                        asset_version_new = increment_version(check_from_index_version(f'templates', indexed_items))
+            # Database asset handling
+            if f'database_{necto_versions[index_name]}.7z' == asset['name']:
+                kibana_id = asset['name'].replace('.7z', '')
                 doc = {
-                    "name": package_id,
-                    "version" : asset_version_new,
-                    "display_name" : f"NECTO project {package_id} templates - {necto_version}",
-                    "hidden" : True,
-                    "vendor" : "MIKROE",
-                    "type" : "application",
-                    "download_link" : asset['browser_download_url'],
-                    "download_link_api" : asset['url'],
-                    "install_location" : metadata_content[0]['templates'][package_id]['install_location'],
-                    "package_changed": asset_version_previous != asset_version_new,
-                    "hash": hash_new,
-                    "gh_package_name": f"{package_id}.7z"
+                    "name": "database",
+                    "display_name": "NECTO Database",
+                    "author": "MIKROE",
+                    "hidden": True,
+                    "version": "3.0.0",
+                    "type": "database",
+                    "created_at": asset['created_at'],
+                    "updated_at": asset['updated_at'],
+                    "published_at": published_at,
+                    "hash": metadata[asset['name']]['hash'],
+                    "category": "utility",
+                    "download_link": asset['browser_download_url'],
+                    "download_link_api": asset['url'],
+                    "package_changed": True,
+                    "install_location": "%APPLICATION_DATA_DIR%/databases",
+                    "gh_package_name": asset['name'],
+                    "_type": "_doc",
+                    "dependencies": [
+                        "mikroe_utils_common"
+                    ]
                 }
-        elif 'lvgl' in name_without_extension:
-            if 'test' in index_name:
-                necto_version = necto_versions['test']
-            elif 'live' in index_name:
-                necto_version = necto_versions['live']
-            elif 'experimental' in index_name:
-                necto_version = necto_versions['experimental']
-            if necto_version in name_without_extension:
-                package_id = re.sub(
-                    rf"_({'|'.join(map(re.escape, necto_versions.values()))})$",
-                    "",
-                    name_without_extension
-                )
-                hash_previous = check_from_index_hash(package_id, indexed_items)
-                hash_new = metadata_content[0][name_without_extension]['hash']
-                asset_version_previous = check_from_index_version(package_id, indexed_items)
-                # Assign previous version if it exists, else - make it 1.0.0
-                if asset_version_previous:
-                    asset_version_new = asset_version_previous
+                indexed_item = support.find_asset(indexed_items, 'database')
+                if indexed_item:
+                    if doc['hash'] != indexed_item['hash']:
+                        doc['version'] = increase_patch_version(indexed_item['version'])
+                        indexing_mapping[index_name][kibana_id] = doc
                 else:
-                    asset_version_new = '1.0.0'
-                if hash_previous:
-                    if hash_previous != hash_new:
-                        asset_version_new = increment_version(asset_version_previous)
+                    indexing_mapping[index_name][kibana_id] = doc
+
+            # Images asset handling
+            elif 'images.7z' == asset['name']:
+                kibana_id = 'images'
                 doc = {
-                    "name": package_id,
-                    "version" : asset_version_new,
-                    "display_name" : f"LVGL {package_id[5:]}", # Drop "lvgl_"
-                    "hidden" : True,
-                    "vendor" : "MIKROE",
-                    "type" : "library",
-                    'created_at' : asset['created_at'],
-                    'updated_at' : asset['updated_at'],
-                    'published_at': published_at,
-                    'category': 'SDK Library',
-                    "download_link" : asset['browser_download_url'],
-                    "download_link_api" : asset['url'],
-                    "install_location" : "%APPLICATION_DATA_DIR%/packages/lvgl",
-                    "package_changed": asset_version_previous != asset_version_new,
-                    "hash": hash_new,
-                    "gh_package_name": f"{package_id}.7z"
+                    "name": "images",
+                    "display_name": "NECTO Resources - Images",
+                    "author": "MIKROE",
+                    "hidden": True,
+                    "version": "v3.0.0",
+                    "type": "images",
+                    "created_at": asset['created_at'],
+                    "updated_at": asset['updated_at'],
+                    "published_at": published_at,
+                    "hash": metadata[asset['name']]['hash'],
+                    "category": "resources",
+                    "download_link": asset['browser_download_url'],
+                    "download_link_api": asset['url'],
+                    "package_changed": True,
+                    "install_location": "%APPLICATION_DATA_DIR%/resources/images",
+                    "gh_package_name": asset['name'],
+                    "_type": "_doc"
                 }
-        elif 'images' == name_without_extension:
-            package_id = name_without_extension + '_sdk'
-            hash_previous = check_from_index_hash('images_sdk', indexed_items)
-            hash_new = metadata_content[0]['images']['hash']
-            asset_version_previous = check_from_index_version('images_sdk', indexed_items)
-            asset_version_new = asset_version_previous
-            if hash_previous != hash_new:
-                asset_version_new = increment_version(asset_version_previous)
-            doc = {
-                "name": 'images_sdk',
-                "version" : asset_version_new,
-                "display_name" : "mikroSDK Setup images",
-                "hidden" : True,
-                "vendor" : "MIKROE",
-                "type" : "images",
-                "download_link" : asset['browser_download_url'],
-                "download_link_api" : asset['url'],
-                "install_location" : "%APPLICATION_DATA_DIR%/resources/images",
-                "package_changed": asset_version_previous != asset_version_new,
-                "hash": hash_new,
-                "gh_package_name": "images.7z"
-            }
-        elif asset['name'].startswith('board') or \
-            asset['name'].startswith('mikromedia') or \
-            asset['name'].startswith('clicker') or \
-            asset['name'].startswith('kit') or \
-            asset['name'].startswith('flip') or \
-            asset['name'].startswith('mcu_card') or \
-            asset['name'].startswith('pim') or \
-            'mcucard' in asset['name'] or \
-            'mcu_card' in asset['name'] or \
-            'micromod' in asset['name'] or \
-            asset['name'].startswith('sibrain'):
+                indexed_item = support.find_asset(indexed_items, 'images')
+                if indexed_item:
+                    if doc['hash'] != indexed_item['hash']:
+                        doc['version'] = increase_patch_version(indexed_item['version'])
+                        indexing_mapping[index_name][kibana_id] = doc
+                else:
+                    indexing_mapping[index_name][kibana_id] = doc
 
-            # Set new version to be 1.0.0 by default
-            asset_version_new = '1.0.0'
-            # Get the indexed version
-            asset_version_previous = check_from_index_version(name_without_extension, indexed_items)
-            # Set hash to be None by default
-            hash_new = None
-            # If current item is already indexed
-            if name_without_extension in index_asset_names:
-                # If there is an info about hash in metadata for current release (normally it should have it always)
-                if 'hash' in metadata_content[0]['packages'][package_names[0][name_without_extension]]:
-                    # Set version to be as for index asset
-                    asset_version_new = asset_version_previous
-                    # Get hash info for current item from latest release metadata.json
-                    metadata_hash = metadata_content[0]['packages'][package_names[0][name_without_extension]]['hash']
-                    # Get indexed hash info for current item
-                    hash_indexed = check_from_index_hash(name_without_extension, indexed_items)
-                    # If hash from current metadata is not the same as indexed hash
-                    if metadata_hash != hash_indexed:
-                        # Increase the index version
-                        asset_version_new = increment_version(asset_version_previous)
-                        # Set the index hash to be as in metadata
-                        hash_new = metadata_hash
-                    # Else leave it to be the same
-                    else:
-                        hash_new = hash_indexed
-            # If current item is not indexed
-            else:
-                # If there is an info about hash in metadata for current release (normally it should have it always)
-                if 'hash' in metadata_content[0]['packages'][package_names[0][name_without_extension]]:
-                    # Set hash to be as in metadata.json for current release
-                    hash_new = metadata_content[0]['packages'][package_names[0][name_without_extension]]['hash']
+            # LVGL package handling
+            elif asset['name'].startswith('lvgl_') and f'_{necto_versions[index_name]}.7z' in asset['name']:
+                kibana_id = asset['name'].replace(f'{necto_versions[index_name]}.7z', '')
+                doc = {
+                    "name": kibana_id,
+                    "display_name": metadata[asset['name']]['display_name'],
+                    "hidden": False,
+                    "vendor": "MIKROE",
+                    "version": "3.0.0",
+                    "type": "legacy_sdk",
+                    "created_at": asset['created_at'],
+                    "updated_at": asset['updated_at'],
+                    "published_at": published_at,
+                    "hash": metadata[asset['name']]['hash'],
+                    "category": "SDK Library",
+                    "download_link": asset['browser_download_url'],
+                    "download_link_api": asset['url'],
+                    "install_location": "%APPLICATION_DATA_DIR%/packages/lvgl",
+                    "package_changed": True,
+                    "gh_package_name": asset['name'],
+                    "_type": "_doc"
+                }
+                indexed_item = support.find_asset(indexed_items, asset['name'].replace(f'_{necto_versions[index_name]}.7z', ''))
+                if indexed_item:
+                    if doc['hash'] != indexed_item['hash']:
+                        doc['version'] = increase_patch_version(indexed_item['version'])
+                        indexing_mapping[index_name][kibana_id] = doc
+                else:
+                    indexing_mapping[index_name][kibana_id] = doc
 
-            # Get valid package name from metadata,json
-            for each_package in metadata_content[0]['packages']:
-                if metadata_content[0]['packages'][each_package]['package_name'] == name_without_extension:
-                    package_name = metadata_content[0]['packages'][each_package]['display_name']
-                    break
+            # NECTO utils packages handling
+            elif asset['name'] in utils_packs:
+                kibana_id = asset['name'].replace('7z', '')
+                doc = {
+                    "name": kibana_id,
+                    "display_name": utils_packs[asset['name']],
+                    "author": "MIKROE",
+                    "hidden": True,
+                    "type": kibana_id,
+                    "version": "3.0.0",
+                    "created_at": asset['created_at'],
+                    "updated_at": asset['updated_at'],
+                    "published_at": published_at,
+                    "hash": metadata[asset['name']]['hash'],
+                    "category": "utility",
+                    "download_link": asset['browser_download_url'],
+                    "download_link_api": asset['url'],
+                    "package_changed": True,
+                    "install_location": "%APPLICATION_DATA_DIR%/cmake",
+                    "gh_package_name": asset['name'],
+                    "_type": "_doc"
+                }
+                indexed_item = support.find_asset(indexed_items, kibana_id)
+                if indexed_item:
+                    if doc['hash'] != indexed_item['hash']:
+                        doc['version'] = increase_patch_version(indexed_item['version'])
+                        indexing_mapping[index_name][kibana_id] = doc
+                else:
+                    indexing_mapping[index_name][kibana_id] = doc
 
-            publish_date = published_at
+            # NECTO translation packs handling
+            elif 'necto-translations' in asset['name']:
+                kibana_id = metadata[asset['name']]['name'].replace('-', '_')
+                doc = {
+                    "name": metadata[asset['name']]['name'],
+                    "version": metadata[asset['name']]['version'],
+                    "type": metadata[asset['name']]['type'],
+                    "display_name": metadata[asset['name']]['display_name'],
+                    "author": "MIKROE",
+                    "short_description": metadata[asset['name']]['short_description'],
+                    "hidden": False,
+                    "created_at": asset['created_at'],
+                    "updated_at": asset['updated_at'],
+                    "published_at": published_at,
+                    "hash": metadata[asset['name']]['hash'],
+                    "download_link": asset['browser_download_url'],
+                    "download_link_api": asset['url'],
+                    "package_changed": True,
+                    "install_location": f"%APPLICATION_DATA_DIR%/packages/translations/{metadata[asset['name']]['name']}",
+                    "gh_package_name": asset['name'],
+                    "_type": "_doc"
+                }
+                indexed_item = support.find_asset(indexed_items, kibana_id)
+                if indexed_item:
+                    if doc['hash'] != indexed_item['hash']:
+                        indexing_mapping[index_name][kibana_id] = doc
+                else:
+                    indexing_mapping[index_name][kibana_id] = doc
 
-            doc = {
-                'name': metadata_content[0]['packages'][package_name]['package_name'],
-                'display_name': metadata_content[0]['packages'][package_name]['display_name'],
-                'author': 'MIKROE',
-                'hidden': False,
-                "icon": re.sub(r'(mikrosdk_v2/)(.*?)(/resources)', r'\1master\3', metadata_content[0]['packages'][package_name]['icon']),
-                'type': metadata_content[0]['packages'][package_name]['type'],
-                'version': asset_version_new,
-                'created_at' : asset['created_at'],
-                'updated_at' : asset['updated_at'],
-                'published_at': publish_date,
-                'category': metadata_content[0]['packages'][package_name]['category'],
-                'download_link': asset['browser_download_url'],
-                'download_link_api': asset['url'],
-                "install_location" : metadata_content[0]['packages'][package_name]['install_location'],
-                'package_changed': asset_version_previous != asset_version_new,
-                'show_package_info': True,
-                'hash': hash_new,
-                'gh_package_name': os.path.splitext(os.path.basename(asset['name']))[0]
-            }
+            # NECTO tempaltes packs handling
+            elif 'templates_' in asset['name']:
+                # kibana_id = metadata[asset['name']]['name'].replace('-', '_')
+                # doc = {
+                #     "name": metadata[asset['name']]['name'],
+                #     "version": metadata[asset['name']]['version'],
+                #     "type": metadata[asset['name']]['type'],
+                #     "display_name": metadata[asset['name']]['display_name'],
+                #     "author": "MIKROE",
+                #     "short_description": metadata[asset['name']]['short_description'],
+                #     "hidden": False,
+                #     "created_at": asset['created_at'],
+                #     "updated_at": asset['updated_at'],
+                #     "published_at": published_at,
+                #     "hash": metadata[asset['name']]['hash'],
+                #     "download_link": asset['browser_download_url'],
+                #     "download_link_api": asset['url'],
+                #     "package_changed": True,
+                #     "install_location": f"%APPLICATION_DATA_DIR%/packages/translations/{metadata[asset['name']]['name']}",
+                #     "gh_package_name": asset['name'],
+                #     "_type": "_doc"
+                # }
+                # indexed_item = support.find_asset(indexed_items, kibana_id)
+                # if indexed_item:
+                #     if doc['hash'] != indexed_item['hash']:
+                #         indexing_mapping[index_name][kibana_id] = doc
+                # else:
+                #     indexing_mapping[index_name][kibana_id] = doc
 
-        # Index the document
-        if doc:
-            # If requested to keep previous date, only update the hash value
-            if keep_previous_date and 'hash' in doc:
-                for item in indexed_items:
-                    package_name = name_without_extension
-                    # Exception for SDK images - index name is images_sdk
-                    if 'images' == name_without_extension:
-                        package_name = 'images_sdk'
-                    if item['name'] == package_name:
-                        hash_new = doc['hash']
-                        doc = item
-                        doc['hash'] = hash_new
-                        break
-            # Kibana v8 requires _type to be in body in order to have doc_type defined
-            doc['_type'] = '_doc'
-            if 'images' == name_without_extension or (asset_version_previous != doc['version'] and doc['package_changed']) or (keep_previous_date and 'mikrosdk' != name_without_extension):
-                resp = es.index(index=index_name, doc_type=None, id=package_id, body=doc)
-                print(f"{resp["result"]} {resp['_id']}")
-
-                if asset_version_previous != doc['version'] and doc['package_changed']:
-                    print(f'\033[95mVersion for asset {doc['name']} has been updated from {asset_version_previous} to {doc['version']}\033[0m')
-                # SDK images and templates package don't have a publish date
-                elif keep_previous_date:
-                    if 'images' != name_without_extension and 'templates' not in name_without_extension:
-                        print(f'\033[95mKept the release date for asset {doc['name']} as {doc['published_at']} with the {doc['version']} version. New hash is {doc['hash']}\033[0m')
-                    else:
-                        print(f'\033[95mUpdated hash for {doc['name']} to be {doc['hash']}\033[0m')
-
-                ## Note: commented out as now we index the browser download link, not the api link
-                ## and it always stays the same, so no need to reindex to live on every release to TEST.
-                ## Leaving it as commented out section to see how images_sdk asset behaves without indexing it to live on test release.
-                # Always index images_sdk asset to live
-                # if 'images' == name_without_extension and 'test' in index_name:
-                #     asset_version_previous = check_from_index_version('images_sdk', fetch_current_indexed_packages(es, os.environ['ES_INDEX_LIVE']))
-                #     doc['version'] = increment_version(asset_version_previous)
-                #     resp = es.index(index=os.environ['ES_INDEX_LIVE'], doc_type=None, id=package_id, body=doc)
-                #     print("Indexed images_sdk to LIVE as well")
-                #     print(f'\033[95mVersion for asset {doc['name']} on LIVE has been updated from {asset_version_previous} to {doc['version']}\033[0m')
-
-def is_release_latest(repo, token, release_version):
-    api_headers = get_headers(True, token)
-
-    latest_release = support.get_latest_release(repo, api_headers)
-    specified_release = support.get_specified_release(repo, api_headers, release_version)
-    if 'latest' == release_version:
-        return True
-    else:
-        return latest_release['tag_name'] == specified_release['tag_name']
-
-def promote_to_latest(repo, token, release_version):
-    # Headers for authentication
-    headers = {
-        "Authorization": f"token {token}",
-        "Accept": "application/vnd.github+json"
-    }
-
-    # Step 1: Update the prerelease version and set it as not prerelease
-    selected_release = support.get_specified_release(repo, headers, release_version)
-    if selected_release['prerelease']:
-        data_selected_release = {
-            "tag_name": selected_release['tag_name'],
-            "name": selected_release['name'],
-            "body": selected_release['body'],
-            "draft": False,
-            "prerelease": False
-        }
-
-        response_1 = requests.patch(
-            f"https://api.github.com/repos/{repo}/releases/{selected_release['id']}",
-            headers=headers,
-            json=data_selected_release
-        )
-
-    if not response_1.ok:
-        raise Exception(f"Failed to update release {selected_release['name']}: {response_1.status_code} - {response_1.text}")
-
-    # Step 2: Set the current latest release to prerelease
-    latest_release = support.get_latest_release(repo, headers)
-    data_latest_release = {
-        "prerelease": True
-    }
-
-    response_2 = requests.patch(
-        f"https://api.github.com/repos/{repo}/releases/{latest_release['id']}",
-        headers=headers,
-        json=data_latest_release
-    )
-
-    if not response_2.ok:
-        raise Exception(f"Failed to demote release {selected_release['name']}: {response_2.status_code} - {response_2.text}")
-
-    # Step 3: Change the state of the current latest release back to not prerelease
-    data_latest_release['prerelease'] = False
-    response_3 = requests.patch(
-        f"https://api.github.com/repos/{repo}/releases/{latest_release['id']}",
-        headers=headers,
-        json=data_latest_release
-    )
-
-    if not response_3.ok:
-        raise Exception(f"Failed to revert status for release {selected_release['name']}: {response_3.status_code} - {response_3.text}")
-
-    return
 
 
 if __name__ == '__main__':
@@ -485,6 +260,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Upload directories as release assets.")
     parser.add_argument("token", help="GitHub Token")
     parser.add_argument("repo", help="Repository name, e.g., 'username/repo'")
+    parser.add_argument("index_names", help="Target index names")
     args = parser.parse_args()
 
     # Elasticsearch instance used for indexing
@@ -507,17 +283,10 @@ if __name__ == '__main__':
     latest_release = support.get_latest_release(args.repo, args.token)
     assets = support.get_release_assets(args.repo, latest_release['id'], args.token)
 
-    # Get all indexes to go through all of them recursively
-    index_names = [
-        os.environ['ES_INDEX_LIVE'],
-        os.environ['ES_INDEX_TEST'],
-        os.environ['ES_INDEX_EXPERIMENTAL']
-    ]
-
     # Now index the new release
     index_release_to_elasticsearch(
         es,
         args.token,
         assets,
-        index_names
+        args.index_names
     )

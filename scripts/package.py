@@ -1,5 +1,5 @@
 import argparse, hashlib, json, asyncio, zipfile, py7zr
-import os, shutil
+import os, shutil, re
 import support
 
 from pathlib import Path
@@ -155,6 +155,11 @@ def package_template_archives(repo_root, output_dir):
         for folder in list_template_folders(templates_root):
             folder_path = templates_root / folder
             archive_leaf = folder.replace("project_templates/", "")
+
+            # LVGL templates are part of LVGL package, so we don't pack them separately
+            if 'lvgl' in archive_leaf:
+                continue
+
             archive_name = f"templates_{necto_version}_{archive_leaf}.7z"
             archive_path = output_dir / archive_name
 
@@ -184,18 +189,68 @@ def package_utility_archives(repo_root, output_dir):
 def package_image_archives(repo_root, output_dir):
     metadata_dependecies = {}
 
-    for folder in ['images', 'images_sdk']:
-        archive_name = f"{folder}.7z"
+    archive_name = "images.7z"
+    archive_path = output_dir / archive_name
+    print(f"\033[94mCreating image archive: {archive_name}\033[0m")
+    create_7z_from_contents(repo_root / 'images', archive_path)
+    metadata_dependecies[archive_name] = {"hash": hash_directory_contents(repo_root / 'images')}
+
+    return metadata_dependecies
+
+
+def fetch_lvgl_templates(templates_root_path, destination_folder):
+    if destination_folder.exists():
+        shutil.rmtree(destination_folder)
+    os.makedirs(destination_folder)
+
+    for folder in list_template_folders(templates_root_path):
+        if 'lvgl' in folder:
+            folder_path = templates_root_path / folder
+            shutil.copytree(folder_path, destination_folder / folder.replace('project_templates/', ''))
+
+
+def package_lvgl_archives(repo_root, output_dir, token):
+    metadata_dependecies = {}
+    # Download the LVGL package from SDK repo
+    mikrosdk_repo = 'MikroElektronika/mikrosdk_v2'
+    sdk_assets = support.get_release_assets(
+        mikrosdk_repo,
+        support.get_latest_release(mikrosdk_repo, token)['id'],
+        token
+    )
+    lvgl_asset = support.find_asset(sdk_assets, 'lvgl.7z')
+    support.extract_archive_from_url(lvgl_asset['browser_download_url'], output_dir / 'lvgl' / 'lvgl')
+
+
+    with open(output_dir / 'lvgl' / 'lvgl' / 'lvgl.h', 'r') as file:
+        lvgl_content = file.read()
+    version_major = re.search(r'#define LVGL_VERSION_MAJOR\s+(\d+)', lvgl_content).group(1)
+    version_minor = re.search(r'#define LVGL_VERSION_MINOR\s+(\d+)', lvgl_content).group(1)
+    version_patch = re.search(r'#define LVGL_VERSION_PATCH\s+(\d+)', lvgl_content).group(1)
+    lvgl_version = f'{version_major}.{version_minor}.{version_patch}'
+    print(f'LVGL version detected: {lvgl_version}')
+
+    lvgl_folder = f'lvgl_{lvgl_version.replace('.', '')}'
+    os.rename(output_dir / 'lvgl' / 'lvgl', output_dir / 'lvgl' / lvgl_folder)
+
+    for necto_version in ['live', 'dev', 'experimental']:
+        archive_name = f'lvgl_{lvgl_version}_{necto_version}.7z'
+        fetch_lvgl_templates(repo_root / 'templates' / 'necto' / necto_version, output_dir / 'lvgl' / lvgl_folder / 'templates')
         archive_path = output_dir / archive_name
-        print(f"\033[94mCreating image archive: {archive_name}\033[0m")
-        create_7z_from_contents(repo_root / folder, archive_path)
-        metadata_dependecies[archive_name] = {"hash": hash_directory_contents(repo_root / folder)}
+        print(f"\033[94mCreating LVGL archive: {archive_name}\033[0m")
+        create_7z_from_contents(output_dir / 'lvgl', archive_path)
+        metadata_dependecies[archive_name] = {
+            "display_name": f"LVGL {lvgl_version}",
+            "hash": hash_directory_contents(output_dir / lvgl_folder)
+        }
+
+    shutil.rmtree(output_dir / 'lvgl')
 
     return metadata_dependecies
 
 
 def ensure_clean_output_dir(repo_root):
-    output_dir = repo_root / "tmp" / "release_assets"
+    output_dir = repo_root / "tmp"
     if output_dir.exists():
         shutil.rmtree(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -211,6 +266,9 @@ async def main(token, repo):
     print(f"\033[94mOutput folder:   {output_dir}\033[0m")
 
     metadata = {}
+
+    # Pack LVGL package
+    metadata.update(package_lvgl_archives(repo_root, output_dir, token))
 
     # Pack translation packages
     metadata.update(package_translation_archives(repo_root, output_dir))
