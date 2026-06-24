@@ -1,0 +1,10 @@
+{
+    "name": "localization_es_ES",
+    "display_name": "Spanish Language Pack",
+    "author": "MIKROE",
+    "hidden": false,
+    "type": "translations",
+    "short_description": "NECTO Studio interface translation for Spanish language (updatable without a new release).",
+    "install_location": "%APPLICATION_DATA_DIR%/packages/translations/es_ES",
+    "package_name": "localization_es_ES.zip"
+}

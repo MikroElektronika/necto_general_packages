@@ -1,0 +1,10 @@
+{
+    "name": "localization_pt_PT",
+    "display_name": "Portuguese Language Pack",
+    "author": "MIKROE",
+    "hidden": false,
+    "type": "translations",
+    "short_description": "NECTO Studio interface translation for Portuguese language (updatable without a new release).",
+    "install_location": "%APPLICATION_DATA_DIR%/packages/translations/pt_PT",
+    "package_name": "localization_pt_PT.zip"
+}
