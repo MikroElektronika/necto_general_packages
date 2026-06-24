@@ -1,5 +1,5 @@
 import argparse, hashlib, json, asyncio, zipfile, py7zr
-import os, shutil, re
+import os, shutil
 import support
 
 from pathlib import Path
@@ -141,7 +141,7 @@ def find_all_manifests(repo_root):
         with manifest_path.open("r", encoding="utf-8") as f:
             manifest = json.load(f)
 
-        package_name = manifest.get("package_name")
+        package_name = manifest.get("gh_package_name")
         source_folder = manifest_path.parent
         manifest["source_folder"] = str(source_folder)
         metadata[package_name] = manifest

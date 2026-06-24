@@ -1,5 +1,0 @@
-py7zr
-packaging
-requests
-aiohttp
-aiofiles

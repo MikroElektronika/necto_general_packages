@@ -1,10 +1,11 @@
 {
     "name": "localization_zh_CN",
     "display_name": "Chinese Language Pack",
-    "type": "translations",
     "author": "MIKROE",
     "hidden": false,
+    "package_changed": true,
+    "type": "translations",
     "short_description": "NECTO Studio interface translation for Chinese language (updatable without a new release).",
     "install_location": "%APPLICATION_DATA_DIR%/packages/translations/zh_CN",
-    "package_name": "localization_zh_CN.zip"
+    "gh_package_name": "localization_zh_CN.zip"
 }
