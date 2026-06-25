@@ -1,0 +1,11 @@
+{
+    "name": "localization_sr_RS",
+    "display_name": "Serbian Language Pack",
+    "author": "MIKROE",
+    "hidden": false,
+    "package_changed": true,
+    "type": "translations",
+    "short_description": "NECTO Studio interface translation for Serbian language (updatable without a new release).",
+    "install_location": "%APPLICATION_DATA_DIR%/packages/translations/sr_RS",
+    "gh_package_name": "localization_sr_RS.zip"
+}

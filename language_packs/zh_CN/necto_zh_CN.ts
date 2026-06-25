@@ -196,7 +196,7 @@ Nikola Lukic,  Marko Lukic,  Filip Jankovic</translation>
         <translation>在单独窗口中分离</translation>
     </message>
     <message>
-        <location filename="../plugins/ai_qa/src/ai_qa_view.cpp" line="+175"/>
+        <location filename="../plugins/ai_qa/src/ai_qa_view.cpp" line="+186"/>
         <location line="+236"/>
         <source>NECTO Assistant</source>
         <translation>NECTO 助手</translation>
@@ -1627,7 +1627,7 @@ Do you wish to override the security check and continue ?   </source>
         <translation>搜索值</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+23"/>
         <source>Search table</source>
         <translation>搜索表格</translation>
     </message>
@@ -3106,7 +3106,7 @@ Do you wish to override the security check and continue ?   </source>
         <translation>模拟器仅支持 mikroC AI 编译器。</translation>
     </message>
     <message>
-        <location line="+648"/>
+        <location line="+637"/>
         <source>Error occured: %1</source>
         <translation>发生错误：%1</translation>
     </message>
@@ -3124,7 +3124,7 @@ Do you wish to override the security check and continue ?   </source>
         <translation>表单</translation>
     </message>
     <message>
-        <location filename="../core/src/debugger/debug_view/src/debug_view.cpp" line="+79"/>
+        <location filename="../core/src/debugger/debug_view/src/debug_view.cpp" line="+75"/>
         <source>  Locals</source>
         <translation>  局部变量</translation>
     </message>
@@ -3164,33 +3164,7 @@ Do you wish to override the security check and continue ?   </source>
         <translation>添加新表达式</translation>
     </message>
     <message>
-        <location line="+28"/>
-        <source>Simulate touch click</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>Simulate touch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Tap coordinates  x,y (pixels):</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+19"/>
-        <location line="+13"/>
-        <source>Simulate drag</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Path  x0,y0 x1,y1 (start end, pixels):</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+26"/>
+        <location line="+25"/>
         <source>Remove expression</source>
         <translation>移除表达式</translation>
     </message>
@@ -3235,7 +3209,7 @@ Do you wish to override the security check and continue ?   </source>
         <translation>添加到表达式</translation>
     </message>
     <message>
-        <location line="+149"/>
+        <location line="+59"/>
         <location line="+20"/>
         <location line="+24"/>
         <source>Value format</source>
@@ -5447,7 +5421,7 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <location filename="../plugins/editors/lvgl_designer_editor_v8/src/view/lvgl_designer_view.cpp" line="+210"/>
         <location line="+48"/>
-        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/view/lvgl_designer_view.cpp" line="+298"/>
+        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/view/lvgl_designer_view.cpp" line="+219"/>
         <location line="+48"/>
         <source>Align and distrubute</source>
         <translation>对齐并分布</translation>
@@ -5597,23 +5571,20 @@ Do you wish to override the security check and continue ?   </source>
         <translation>缩小</translation>
     </message>
     <message>
-        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/view/lvgl_designer_view.cpp" line="+19"/>
         <source>Show snap guides</source>
-        <translation>显示对齐参考线</translation>
+        <translation type="vanished">显示对齐参考线</translation>
     </message>
     <message>
-        <location line="+9"/>
         <source>Show grid</source>
-        <translation>显示网格</translation>
+        <translation type="vanished">显示网格</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Show rulers</source>
-        <translation>显示标尺</translation>
+        <translation type="vanished">显示标尺</translation>
     </message>
     <message>
-        <location filename="../plugins/editors/lvgl_designer_editor_v8/src/view/lvgl_designer_view.cpp" line="+32"/>
-        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/view/lvgl_designer_view.cpp" line="+23"/>
+        <location line="+32"/>
+        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/view/lvgl_designer_view.cpp" line="+32"/>
         <source>Cut</source>
         <translation>剪切</translation>
     </message>
@@ -5630,12 +5601,11 @@ Do you wish to override the security check and continue ?   </source>
         <translation>粘贴</translation>
     </message>
     <message>
-        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/view/lvgl_designer_view.cpp" line="+7"/>
         <source>Duplicate</source>
-        <translation>复制</translation>
+        <translation type="vanished">复制</translation>
     </message>
     <message>
-        <location filename="../plugins/editors/lvgl_designer_editor_v8/src/view/lvgl_designer_view.cpp" line="+6"/>
+        <location line="+6"/>
         <location filename="../plugins/editors/lvgl_designer_editor_v9/src/view/lvgl_designer_view.cpp" line="+6"/>
         <source>Delete selected</source>
         <translation>删除所选项</translation>
@@ -5648,7 +5618,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <location line="+89"/>
-        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/view/lvgl_designer_view.cpp" line="+95"/>
+        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/view/lvgl_designer_view.cpp" line="+89"/>
         <source>Group components</source>
         <translation>组合组件</translation>
     </message>
@@ -5666,28 +5636,20 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <location line="+24"/>
-        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/view/lvgl_designer_view.cpp" line="+26"/>
+        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/view/lvgl_designer_view.cpp" line="+24"/>
         <source>Save screen</source>
         <translation>保存屏幕</translation>
     </message>
     <message>
-        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/view/lvgl_designer_view.cpp" line="+178"/>
         <source>Active screen</source>
-        <translation>当前屏幕</translation>
+        <translation type="vanished">当前屏幕</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <location line="+115"/>
         <source>Add screen</source>
-        <translation>添加屏幕</translation>
+        <translation type="vanished">添加屏幕</translation>
     </message>
     <message>
-        <location line="+0"/>
-        <source>Screen name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../plugins/editors/lvgl_designer_editor_v8/src/view/lvgl_designer_view.cpp" line="-273"/>
+        <location line="-273"/>
         <source>Object inspector</source>
         <translation>对象检查器</translation>
     </message>
@@ -5720,215 +5682,171 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>LVGLEventActionDialog</name>
     <message>
-        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/view/lvgl_event_action_dialog.ui" line="+14"/>
         <source>Edit actions</source>
-        <translation>编辑动作</translation>
+        <translation type="vanished">编辑动作</translation>
     </message>
     <message>
-        <location line="+81"/>
         <source>Configure actions</source>
-        <translation>配置动作</translation>
+        <translation type="vanished">配置动作</translation>
     </message>
     <message>
-        <location line="+25"/>
         <source>When this event occurs run these actions in order</source>
-        <translation>当此事件发生时，按顺序运行这些动作</translation>
+        <translation type="vanished">当此事件发生时，按顺序运行这些动作</translation>
     </message>
     <message>
-        <location line="+91"/>
         <source>No actions yet — add one to get started</source>
-        <translation>尚无动作 — 添加一个以开始</translation>
+        <translation type="vanished">尚无动作 — 添加一个以开始</translation>
     </message>
     <message>
-        <location line="+67"/>
         <source>Add action</source>
-        <translation>添加动作</translation>
+        <translation type="vanished">添加动作</translation>
     </message>
     <message>
-        <location line="+53"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation type="vanished">取消</translation>
     </message>
     <message>
-        <location line="+10"/>
         <source>Save</source>
-        <translation>保存</translation>
+        <translation type="vanished">保存</translation>
     </message>
     <message>
-        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/view/lvgl_event_action_dialog.cpp" line="+305"/>
         <source>Search or pick a function…</source>
-        <translation>搜索或选择一个函数…</translation>
+        <translation type="vanished">搜索或选择一个函数…</translation>
     </message>
     <message>
-        <location line="+252"/>
         <source> = event value</source>
-        <translation> = 事件值</translation>
+        <translation type="vanished"> = 事件值</translation>
     </message>
     <message>
-        <location line="+166"/>
-        <location line="+4"/>
         <source>Properties</source>
-        <translation>属性</translation>
+        <translation type="vanished">属性</translation>
     </message>
     <message>
-        <location line="+99"/>
         <source>event value</source>
-        <translation>事件值</translation>
+        <translation type="vanished">事件值</translation>
     </message>
     <message>
-        <location line="+58"/>
         <source>Type an existing function, or a new handler name.</source>
-        <translation>输入现有函数，或新的处理程序名称。</translation>
+        <translation type="vanished">输入现有函数，或新的处理程序名称。</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>&quot;%1&quot; is bound directly as the event handler.</source>
-        <translation>&quot;%1&quot; 直接绑定为事件处理程序。</translation>
+        <translation type="vanished">&quot;%1&quot; 直接绑定为事件处理程序。</translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>&quot;%1&quot; will be created as a new event handler on Save.</source>
-        <translation>保存时将创建 &quot;%1&quot; 作为新的事件处理程序。</translation>
+        <translation type="vanished">保存时将创建 &quot;%1&quot; 作为新的事件处理程序。</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>Calling &quot;%1&quot; — fill its arguments below.</source>
-        <translation>调用 &quot;%1&quot; — 在下方填写其参数。</translation>
+        <translation type="vanished">调用 &quot;%1&quot; — 在下方填写其参数。</translation>
     </message>
     <message>
-        <location line="+15"/>
         <source>Arguments, e.g. ui-&gt;label1, &quot;Hello&quot;</source>
-        <translation>参数，例如 ui-&gt;label1, &quot;Hello&quot;</translation>
+        <translation type="vanished">参数，例如 ui-&gt;label1, &quot;Hello&quot;</translation>
     </message>
     <message>
-        <location line="+9"/>
         <source>%1 takes no arguments.</source>
-        <translation>%1 不接受参数。</translation>
+        <translation type="vanished">%1 不接受参数。</translation>
     </message>
     <message>
-        <location line="+40"/>
         <source>Text (quoted automatically)</source>
-        <translation>文本（自动加引号）</translation>
+        <translation type="vanished">文本（自动加引号）</translation>
     </message>
     <message>
-        <location line="+24"/>
         <source>Event target</source>
-        <translation>事件目标</translation>
+        <translation type="vanished">事件目标</translation>
     </message>
     <message>
-        <location line="+18"/>
         <source>Pick or type an object</source>
-        <translation>选择或输入一个对象</translation>
+        <translation type="vanished">选择或输入一个对象</translation>
     </message>
 </context>
 <context>
     <name>LVGLEventActionRow</name>
     <message>
-        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/view/lvgl_event_action_row.ui" line="+53"/>
         <source>Drag to reorder</source>
-        <translation>拖动以重新排序</translation>
+        <translation type="vanished">拖动以重新排序</translation>
     </message>
     <message>
-        <location line="+30"/>
         <source>Call function</source>
-        <translation>调用函数</translation>
+        <translation type="vanished">调用函数</translation>
     </message>
     <message>
-        <location line="+5"/>
         <source>Navigate to screen</source>
-        <translation>导航到屏幕</translation>
+        <translation type="vanished">导航到屏幕</translation>
     </message>
     <message>
-        <location line="+5"/>
         <source>Set widget property</source>
-        <translation>设置控件属性</translation>
+        <translation type="vanished">设置控件属性</translation>
     </message>
     <message>
-        <location line="+182"/>
         <source>Function</source>
-        <translation>函数</translation>
+        <translation type="vanished">函数</translation>
     </message>
     <message>
-        <location line="+51"/>
         <source>Choose an existing function or create one with +</source>
-        <translation>选择现有函数或用 + 创建一个</translation>
+        <translation type="vanished">选择现有函数或用 + 创建一个</translation>
     </message>
     <message>
-        <location line="+59"/>
-        <location line="+175"/>
         <source>Screen</source>
-        <translation>屏幕</translation>
+        <translation type="vanished">屏幕</translation>
     </message>
     <message>
-        <location line="-141"/>
         <source>Transition / Animation</source>
-        <translation>过渡 / 动画</translation>
+        <translation type="vanished">过渡 / 动画</translation>
     </message>
     <message>
-        <location line="+34"/>
         <source>Duration</source>
-        <translation>持续时间</translation>
+        <translation type="vanished">持续时间</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <location line="+44"/>
         <source> ms</source>
-        <translation> ms</translation>
+        <translation type="vanished"> ms</translation>
     </message>
     <message>
-        <location line="-10"/>
         <source>Delay</source>
-        <translation>延迟</translation>
+        <translation type="vanished">延迟</translation>
     </message>
     <message>
-        <location line="+97"/>
         <source>Widget</source>
-        <translation>控件</translation>
+        <translation type="vanished">控件</translation>
     </message>
     <message>
-        <location line="+34"/>
         <source>Style</source>
-        <translation>样式</translation>
+        <translation type="vanished">样式</translation>
     </message>
     <message>
-        <location line="+34"/>
         <source>Property</source>
-        <translation>属性</translation>
+        <translation type="vanished">属性</translation>
     </message>
     <message>
-        <location line="+34"/>
         <source>Value</source>
-        <translation>值</translation>
+        <translation type="vanished">值</translation>
     </message>
     <message>
-        <location line="+48"/>
         <source>false</source>
-        <translation>false</translation>
+        <translation type="vanished">false</translation>
     </message>
     <message>
-        <location line="+5"/>
         <source>true</source>
-        <translation>true</translation>
+        <translation type="vanished">true</translation>
     </message>
     <message>
-        <location line="+14"/>
         <source>Pick color</source>
-        <translation>选择颜色</translation>
+        <translation type="vanished">选择颜色</translation>
     </message>
     <message>
-        <location line="+10"/>
         <source>The value is taken from the triggering event</source>
-        <translation>该值取自触发的事件</translation>
+        <translation type="vanished">该值取自触发的事件</translation>
     </message>
     <message>
-        <location line="+10"/>
         <source>From event value</source>
-        <translation>来自事件值</translation>
+        <translation type="vanished">来自事件值</translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>Use the value carried by the triggering event instead of a fixed value</source>
-        <translation>使用触发事件携带的值，而不是固定值</translation>
+        <translation type="vanished">使用触发事件携带的值，而不是固定值</translation>
     </message>
 </context>
 <context>
@@ -6052,7 +5970,7 @@ Do you wish to override the security check and continue ?   </source>
     <name>LVGLIScreen</name>
     <message>
         <location filename="../plugins/editors/lvgl_designer_editor_v8/src/interfaces/lvgl_i_screen.cpp" line="+208"/>
-        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/interfaces/lvgl_i_screen.cpp" line="+439"/>
+        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/interfaces/lvgl_i_screen.cpp" line="+241"/>
         <source>Add</source>
         <translation>添加</translation>
     </message>
@@ -6103,12 +6021,12 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>LVGLPropertyDelegate</name>
     <message>
-        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/model/lvgl_property_delegate.cpp" line="+606"/>
+        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/model/lvgl_property_delegate.cpp" line="+572"/>
         <source>Click the gear to add an action</source>
         <translation>点击齿轮以添加动作</translation>
     </message>
     <message>
-        <location line="+216"/>
+        <location line="+215"/>
         <source>Skip this point</source>
         <translation>跳过此点</translation>
     </message>
@@ -6916,6 +6834,22 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <location line="+34"/>
         <source>TextLabel</source>
         <translation>文本标签</translation>
+    </message>
+</context>
+<context>
+    <name>Mattermost</name>
+    <message>
+        <location filename="../plugins/mattermost_client/src/mattermost.cpp" line="+25"/>
+        <source>NECTO Chat</source>
+        <translation>NECTO 聊天</translation>
+    </message>
+</context>
+<context>
+    <name>MattermostView</name>
+    <message>
+        <location filename="../plugins/mattermost_client/src/mattermost_view.ui" line="+14"/>
+        <source>Form</source>
+        <translation type="unfinished">表单</translation>
     </message>
 </context>
 <context>
@@ -7743,7 +7677,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>框架</translation>
     </message>
     <message>
-        <location filename="../plugins/editors/monaco_editor/src/monaco_editor_view.cpp" line="+122"/>
+        <location filename="../plugins/editors/monaco_editor/src/monaco_editor_view.cpp" line="+131"/>
         <source>Find in files</source>
         <translation>在文件中查找</translation>
     </message>
@@ -13918,12 +13852,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>正在登录您的账户...</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+45"/>
         <source>Loading packages...</source>
         <translation>正在加载软件包...</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+61"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
@@ -17342,7 +17276,7 @@ Make sure that CMAKE_BUILD_TYPE variable matches the &quot;构建 类型&quot; f
 <context>
     <name>Necto::SingleCameraView</name>
     <message>
-        <location filename="../core/src/planet_debug/view/single_camera_view.cpp" line="+57"/>
+        <location filename="../core/src/planet_debug/view/single_camera_view.cpp" line="+47"/>
         <source>Loading...</source>
         <translation>正在加载...</translation>
     </message>
@@ -21400,7 +21334,7 @@ Make sure that CMAKE_BUILD_TYPE variable matches the &quot;Build type&quot; fiel
 Make sure that CMAKE_BUILD_TYPE variable matches the &quot;构建 类型&quot; field.</translation>
     </message>
     <message>
-        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/view/lvgl_screen_view.cpp" line="+334"/>
+        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/view/lvgl_screen_view.cpp" line="+285"/>
         <source>Reparent %1 components</source>
         <translation>重新指定 %1 个组件的父级</translation>
     </message>
@@ -21412,8 +21346,8 @@ Make sure that CMAKE_BUILD_TYPE variable matches the &quot;构建 类型&quot; f
     <message>
         <location filename="../plugins/editors/lvgl_designer_editor_v8/src/view/lvgl_screen_view.cpp" line="+291"/>
         <location line="+116"/>
-        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/view/lvgl_screen_view.cpp" line="+66"/>
-        <location line="+464"/>
+        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/view/lvgl_screen_view.cpp" line="+68"/>
+        <location line="+242"/>
         <source>Move %1 components</source>
         <translation>移动 %1 个组件</translation>
     </message>
@@ -21504,7 +21438,7 @@ Make sure that CMAKE_BUILD_TYPE variable matches the &quot;构建 类型&quot; f
         <translation>属性结构</translation>
     </message>
     <message>
-        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/interfaces/lvgl_size_grip_item.cpp" line="+563"/>
+        <location filename="../plugins/editors/lvgl_designer_editor_v9/src/interfaces/lvgl_size_grip_item.cpp" line="+431"/>
         <source>Resize %1</source>
         <translation>调整 %1 大小</translation>
     </message>
@@ -25410,3 +25344,162 @@ Do you want to reload the page ?</source>
         <location filename="../common/widgets/src/widget_detach_container/widget_detach_container.ui" line="+14"/>
         <source>Frame</source>
         <translation>框架</translation>
+    </message>
+    <message>
+        <location line="+33"/>
+        <source>TextLabel</source>
+        <translation>文本标签</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Detach</source>
+        <translation>分离</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location line="+23"/>
+        <source>...</source>
+        <translation>...</translation>
+    </message>
+    <message>
+        <location line="-3"/>
+        <source>Close</source>
+        <translation>关闭</translation>
+    </message>
+</context>
+<context>
+    <name>XC16SettingsView</name>
+    <message>
+        <location filename="../plugins/toolchains/xc16/src/view/xc16_settings_view.ui" line="+14"/>
+        <source>Frame</source>
+        <translation>框架</translation>
+    </message>
+    <message>
+        <location filename="../plugins/toolchains/xc16/src/view/xc16_settings_view.cpp" line="+12"/>
+        <source>Compiler Settings</source>
+        <translation>编译器设置</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Save</source>
+        <translation>保存</translation>
+    </message>
+</context>
+<context>
+    <name>XC32SettingsView</name>
+    <message>
+        <location filename="../plugins/toolchains/xc32/src/view/xc32_settings_view.ui" line="+14"/>
+        <source>Frame</source>
+        <translation>框架</translation>
+    </message>
+    <message>
+        <location filename="../plugins/toolchains/xc32/src/view/xc32_settings_view.cpp" line="+12"/>
+        <source>Compiler Settings</source>
+        <translation>编译器设置</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Save</source>
+        <translation>保存</translation>
+    </message>
+</context>
+<context>
+    <name>XC8SettingsView</name>
+    <message>
+        <location filename="../plugins/toolchains/xc8/src/view/xc8_settings_view.ui" line="+14"/>
+        <source>Frame</source>
+        <translation>框架</translation>
+    </message>
+    <message>
+        <location filename="../plugins/toolchains/xc8/src/view/xc8_settings_view.cpp" line="+12"/>
+        <source>Compiler Settings</source>
+        <translation>编译器设置</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Save</source>
+        <translation>保存</translation>
+    </message>
+</context>
+<context>
+    <name>XCFieldView</name>
+    <message>
+        <location filename="../plugins/mcu_support/xc_mcu/xc_mcu/src/mcu_config/view/xc_field_view.ui" line="+20"/>
+        <source>Frame</source>
+        <translation>框架</translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>TextLabel</source>
+        <translation>文本标签</translation>
+    </message>
+</context>
+<context>
+    <name>XCMcuSettingsView</name>
+    <message>
+        <location filename="../plugins/mcu_support/xc_mcu/xc_mcu/src/mcu_config/view/xc_mcu_settings_view.ui" line="+14"/>
+        <source>Frame</source>
+        <translation>框架</translation>
+    </message>
+    <message>
+        <location line="+50"/>
+        <source>Configure MCU</source>
+        <translation>配置 MCU</translation>
+    </message>
+    <message>
+        <location line="+36"/>
+        <source>Config scheme:</source>
+        <translation>配置方案：</translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <source>Clock:</source>
+        <translation>时钟：</translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>MHz</source>
+        <translation>MHz</translation>
+    </message>
+    <message>
+        <location filename="../plugins/mcu_support/xc_mcu/xc_mcu/src/mcu_config/view/xc_mcu_settings_view.cpp" line="+24"/>
+        <source>MCU Settings</source>
+        <translation>MCU 设置</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Save</source>
+        <translation>保存</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Enter MCU clock</source>
+        <translation>输入 MCU 时钟</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Configure %1:</source>
+        <translation>配置 %1：</translation>
+    </message>
+</context>
+</TS>
