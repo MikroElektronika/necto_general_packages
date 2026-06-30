@@ -26,6 +26,18 @@ on:
         description: Index to Live
         default: false
 
+      necto_assistant_repo_ref:
+        type: string
+        description: Branch/ref in private NECTO Assistant repo where import workflow exists
+        default: main
+        required: true
+
+      necto_assistant_pr_target_branch:
+        type: string
+        description: Target branch in private NECTO Assistant repo for generated language PR
+        default: main
+        required: true
+
 permissions:
   contents: read
   actions: read
@@ -45,6 +57,16 @@ jobs:
         with:
           app-id: ${{ vars.MIKROE_ACTIONS }}
           private-key: ${{ secrets.MIKROE_ACTIONS_KEY_AUTHORIZE }}
+
+      - name: Authorize Mikroe Actions App for NECTO Assistant repo
+        uses: actions/create-github-app-token@v2
+        id: necto-assistant-app-token
+        with:
+          app-id: ${{ vars.MIKROE_ACTIONS }}
+          private-key: ${{ secrets.MIKROE_ACTIONS_KEY_AUTHORIZE }}
+          owner: MikroElektronika
+          repositories: |
+            ${{ secrets.NECTO_ASSISTANT_REPO_NAME }}
 
       - name: Checkout code
         uses: actions/checkout@v6
@@ -135,6 +157,12 @@ jobs:
       - name: Trigger NECTO Assistant language auto-generation
         env:
           NECTO_ASSISTANT_AUTO_TRANSLATE_TOKEN: ${{ secrets.NECTO_ASSISTANT_AUTO_TRANSLATE_TOKEN }}
+
+          NECTO_ASSISTANT_IMPORT_PR_TOKEN: ${{ steps.necto-assistant-app-token.outputs.token }}
+          NECTO_ASSISTANT_IMPORT_PR_REPO: MikroElektronika/${{ secrets.NECTO_ASSISTANT_REPO_NAME }}
+          NECTO_ASSISTANT_IMPORT_PR_WORKFLOW: import-runtime-language.yaml
+          NECTO_ASSISTANT_IMPORT_PR_REF: ${{ github.event.inputs.necto_assistant_repo_ref || 'main' }}
+          NECTO_ASSISTANT_IMPORT_PR_TARGET_BRANCH: ${{ github.event.inputs.necto_assistant_pr_target_branch || 'main' }}
         run: |
           if [ ! -s "tmp/necto_assistant_auto_translation_targets.json" ]; then
             echo "No NECTO Assistant auto-translation target file found. Skipping."
@@ -148,7 +176,8 @@ jobs:
             --targets-file tmp/necto_assistant_auto_translation_targets.json \
             --token "$NECTO_ASSISTANT_AUTO_TRANSLATE_TOKEN" \
             --interval-seconds 60 \
-            --max-wait-minutes 240
+            --max-wait-minutes 240 \
+            --dispatch-import-pr
 
       - name: Run index script
         env:
