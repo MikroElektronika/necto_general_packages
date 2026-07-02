@@ -4047,7 +4047,7 @@ Da li želite da preskočite bezbednosnu proveru i nastavite?   </translation>
         <translation type="unfinished">Izaberite jezik interfejsa za NECTO Studio. Stupa na snagu nakon restartovanja.</translation>
     </message>
     <message>
-        <location line="+7" />
+        <location line="+13" />
         <source>Enable animations</source>
         <translation>Omogući animacije</translation>
     </message>
@@ -4077,7 +4077,7 @@ Da li želite da preskočite bezbednosnu proveru i nastavite?   </translation>
         <translation>Izmene će biti vidljive nakon restartovanja NECTO Studio-a.</translation>
     </message>
     <message>
-        <location line="+49" />
+        <location line="+48" />
         <source>Appearance settings</source>
         <translation>Podešavanja izgleda</translation>
     </message>
@@ -5109,6 +5109,26 @@ Da li želite da preskočite bezbednosnu proveru i nastavite?   </translation>
         <location line="+21" />
         <source>Please wait while packages are being installed...</source>
         <translation>Sačekajte dok se paketi instaliraju...</translation>
+    </message>
+    <message>
+        <location line="+40" />
+        <source>Downloading</source>
+        <translation>Preuzimanje</translation>
+    </message>
+    <message>
+        <location line="+1" />
+        <source>Unpacking</source>
+        <translation>Raspakivanje</translation>
+    </message>
+    <message>
+        <location line="+1" />
+        <source>Updating installation record</source>
+        <translation>Ažuriranje zapisa instalacije</translation>
+    </message>
+    <message>
+        <location line="+2" />
+        <source>%1 %2...</source>
+        <translation>%1 %2...</translation>
     </message>
 </context>
 <context>
@@ -6773,7 +6793,7 @@ li.checked::marker { content: "\2612"; }
         <translation>Otvori podešavanja programatora</translation>
     </message>
     <message>
-        <location line="+599" />
+        <location line="+604" />
         <source>File</source>
         <translation>Fajl</translation>
     </message>
@@ -6855,7 +6875,32 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../plugins/mattermost_client/src/mattermost_view.ui" line="+14" />
         <source>Form</source>
-        <translation type="unfinished">Forma</translation>
+        <translation>Forma</translation>
+    </message>
+    <message>
+        <location filename="../plugins/mattermost_client/src/mattermost_view.cpp" line="+779" />
+        <source>Initializing NECTO Chat</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location line="+1" />
+        <source>Connecting to the chat service. This will only take a moment…</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location line="+15" />
+        <source>NECTO Chat is unavailable</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location line="+1" />
+        <source>The chat service could not be reached. It may be temporarily down or under maintenance. Please try again in a few minutes.</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location line="+31" />
+        <source>Retry</source>
+        <translation type="unfinished">Pokušaj ponovo</translation>
     </message>
 </context>
 <context>
@@ -13216,6 +13261,20 @@ li.checked::marker { content: "\2612"; }
     </message>
 </context>
 <context>
+    <name>Necto::Mattermost</name>
+    <message>
+        <source>NECTO Chat</source>
+        <translation>NECTO Ćaskanje</translation>
+    </message>
+</context>
+<context>
+    <name>Necto::MattermostView</name>
+    <message>
+        <source>Form</source>
+        <translation type="obsolete">Forma</translation>
+    </message>
+</context>
+<context>
     <name>Necto::McuSettingsView</name>
     <message>
         <source>Frame</source>
@@ -13881,7 +13940,7 @@ li.checked::marker { content: "\2612"; }
         <translation>Prijavljivanje na nalog...</translation>
     </message>
     <message>
-        <location line="+45" />
+        <location line="+44" />
         <source>Loading packages...</source>
         <translation>Učitavanje paketa...</translation>
     </message>
@@ -13931,7 +13990,7 @@ li.checked::marker { content: "\2612"; }
         <translation>O NECTO Studio-u</translation>
     </message>
     <message>
-        <location line="+181" />
+        <location line="+192" />
         <source>Loading modules...</source>
         <translation>Učitavanje modula...</translation>
     </message>
@@ -20228,7 +20287,12 @@ Please, check your spellug.</translation>
         <translation>Sve je spremno. Koji je sledeći korak?</translation>
     </message>
     <message>
-        <location line="+93" />
+        <location line="+65" />
+        <source>Create example that combines %1</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location line="+28" />
         <source> on %1</source>
         <translation> na %1</translation>
     </message>
@@ -20238,7 +20302,12 @@ Please, check your spellug.</translation>
         <translation>Kreiraj an example where data from %1 is displayed on the %2%3. Make sure ploča is initialized and proper interrupt routines are included</translation>
     </message>
     <message>
-        <location line="+61" />
+        <location line="+18" />
+        <source>%1 on %2</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location line="+43" />
         <source>This feature is available only when a project is open.</source>
         <translation>Ova funkcija je dostupna samo kada je projekat otvoren.</translation>
     </message>
@@ -25255,17 +25324,17 @@ Da li želite da reload the page ?</translation>
     </message>
     <message>
         <location line="+36" />
-        <location line="+144" />
+        <location line="+148" />
         <source>Productivity Hub</source>
         <translation>Productivity Hub</translation>
     </message>
     <message>
-        <location line="-142" />
+        <location line="-146" />
         <source>Quick access to most important tools to boost your productivity.</source>
         <translation>Brz pristup najvažnijim alatima za veću produktivnost.</translation>
     </message>
     <message>
-        <location line="+84" />
+        <location line="+88" />
         <source>Package manager</source>
         <translation>Package manager</translation>
     </message>
@@ -25467,22 +25536,6 @@ Da li želite da reload the page ?</translation>
         <location line="+6" />
         <source>Configure %1:</source>
         <translation>Cnafigure %1:</translation>
-    </message>
-</context>
-<context>
-    <name>Necto::Mattermost</name>
-    <message>
-        <location filename="../plugins/mattermost_client/src/mattermost.cpp" line="+25" />
-        <source>NECTO Chat</source>
-        <translation>NECTO Ćaskanje</translation>
-    </message>
-</context>
-<context>
-    <name>Necto::MattermostView</name>
-    <message>
-        <location filename="../plugins/mattermost_client/src/mattermost_view.ui" line="+14" />
-        <source>Form</source>
-        <translation type="unfinished">Forma</translation>
     </message>
 </context>
 <context><name>PackageManagerFilters</name><message><source>Board Support Packages</source><translation type="unfinished" /></message><message><source>Click Board Libraries &amp; Examples</source><translation type="unfinished" /></message><message><source>Compilers</source><translation type="unfinished" /></message><message><source>Installed</source><translation type="unfinished" /></message><message><source>Language Packs</source><translation type="unfinished" /></message><message><source>MCU Card Support Packages</source><translation type="unfinished" /></message><message><source>MCU Core Libraries</source><translation type="unfinished" /></message><message><source>MCU Programmer &amp; Debugger Support</source><translation type="unfinished" /></message><message><source>Package category:</source><translation type="unfinished" /></message><message><source>Package status:</source><translation type="unfinished" /></message><message><source>Package type:</source><translation type="unfinished" /></message><message><source>Programmer &amp; Debugger Tools</source><translation type="unfinished" /></message><message><source>Solutions</source><translation type="unfinished" /></message><message><source>Waiting for update</source><translation type="unfinished" /></message><message><source>mikroC PRO Libraries</source><translation type="unfinished" /></message><message><source>mikroSDK Updates</source><translation type="unfinished" /></message></context></TS>

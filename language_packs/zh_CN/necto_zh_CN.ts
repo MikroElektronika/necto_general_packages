@@ -4078,7 +4078,7 @@ Do you wish to override the security check and continue ?   </source>
         <translation>重启 NECTO Studio 后更改将生效。</translation>
     </message>
     <message>
-        <location line="+49" />
+        <location line="+48" />
         <source>Appearance settings</source>
         <translation>外观设置</translation>
     </message>
@@ -5110,6 +5110,26 @@ Do you wish to override the security check and continue ?   </source>
         <location line="+21" />
         <source>Please wait while packages are being installed...</source>
         <translation>正在安装软件包，请稍候...</translation>
+    </message>
+    <message>
+        <location line="+40" />
+        <source>Downloading</source>
+        <translation>正在下载</translation>
+    </message>
+    <message>
+        <location line="+1" />
+        <source>Unpacking</source>
+        <translation>正在解压</translation>
+    </message>
+    <message>
+        <location line="+1" />
+        <source>Updating installation record</source>
+        <translation>正在更新安装记录</translation>
+    </message>
+    <message>
+        <location line="+2" />
+        <source>%1 %2...</source>
+        <translation>%1 %2...</translation>
     </message>
 </context>
 <context>
@@ -6766,7 +6786,7 @@ li.checked::marker { content: "\2612"; }
         <translation>打开编程器设置</translation>
     </message>
     <message>
-        <location line="+599" />
+        <location line="+604" />
         <source>File</source>
         <translation>文件</translation>
     </message>
@@ -6849,6 +6869,31 @@ li.checked::marker { content: "\2612"; }
         <location filename="../plugins/mattermost_client/src/mattermost_view.ui" line="+14" />
         <source>Form</source>
         <translation>表单</translation>
+    </message>
+    <message>
+        <location filename="../plugins/mattermost_client/src/mattermost_view.cpp" line="+779" />
+        <source>Initializing NECTO Chat</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location line="+1" />
+        <source>Connecting to the chat service. This will only take a moment…</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location line="+15" />
+        <source>NECTO Chat is unavailable</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location line="+1" />
+        <source>The chat service could not be reached. It may be temporarily down or under maintenance. Please try again in a few minutes.</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location line="+31" />
+        <source>Retry</source>
+        <translation type="unfinished">重试</translation>
     </message>
 </context>
 <context>
@@ -14795,6 +14840,14 @@ Please, check your spelling.</source>
     <message>
         <source>This feature is available only when a project is open.</source>
         <translation>此功能仅在项目打开时可用。</translation>
+    </message>
+    <message>
+        <source>Create example that combines %1</source>
+        <translation>创建组合 %1 的示例</translation>
+    </message>
+    <message>
+        <source>%1 on %2</source>
+        <translation>%2 上的 %1</translation>
     </message>
 </context>
 <context>

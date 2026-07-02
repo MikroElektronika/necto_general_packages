@@ -4078,7 +4078,7 @@ Deseja ignorar a verificação de segurança e continuar?   </translation>
         <translation>As alterações ficarão visíveis depois que você reiniciar o NECTO Studio.</translation>
     </message>
     <message>
-        <location line="+49" />
+        <location line="+48" />
         <source>Appearance settings</source>
         <translation>Configurações de aparência</translation>
     </message>
@@ -5110,6 +5110,26 @@ Deseja ignorar a verificação de segurança e continuar?   </translation>
         <location line="+21" />
         <source>Please wait while packages are being installed...</source>
         <translation>Aguarde enquanto os pacotes estão sendo instalados...</translation>
+    </message>
+    <message>
+        <location line="+40" />
+        <source>Downloading</source>
+        <translation>Baixando</translation>
+    </message>
+    <message>
+        <location line="+1" />
+        <source>Unpacking</source>
+        <translation>Descompactando</translation>
+    </message>
+    <message>
+        <location line="+1" />
+        <source>Updating installation record</source>
+        <translation>Atualizando registro de instalação</translation>
+    </message>
+    <message>
+        <location line="+2" />
+        <source>%1 %2...</source>
+        <translation>%1 %2...</translation>
     </message>
 </context>
 <context>
@@ -6766,7 +6786,7 @@ li.checked::marker { content: "\2612"; }
         <translation>Abrir configurações do programador</translation>
     </message>
     <message>
-        <location line="+599" />
+        <location line="+604" />
         <source>File</source>
         <translation>Arquivo</translation>
     </message>
@@ -6849,6 +6869,31 @@ li.checked::marker { content: "\2612"; }
         <location filename="../plugins/mattermost_client/src/mattermost_view.ui" line="+14" />
         <source>Form</source>
         <translation>Formulário</translation>
+    </message>
+    <message>
+        <location filename="../plugins/mattermost_client/src/mattermost_view.cpp" line="+779" />
+        <source>Initializing NECTO Chat</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location line="+1" />
+        <source>Connecting to the chat service. This will only take a moment…</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location line="+15" />
+        <source>NECTO Chat is unavailable</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location line="+1" />
+        <source>The chat service could not be reached. It may be temporarily down or under maintenance. Please try again in a few minutes.</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location line="+31" />
+        <source>Retry</source>
+        <translation type="unfinished">Tentar novamente</translation>
     </message>
 </context>
 <context>
@@ -14795,6 +14840,14 @@ Verifique a ortografia.</translation>
     <message>
         <source>This feature is available only when a project is open.</source>
         <translation>Este recurso está disponível apenas quando um projeto está aberto.</translation>
+    </message>
+    <message>
+        <source>Create example that combines %1</source>
+        <translation>Criar exemplo que combine %1</translation>
+    </message>
+    <message>
+        <source>%1 on %2</source>
+        <translation>%1 em %2</translation>
     </message>
 </context>
 <context>

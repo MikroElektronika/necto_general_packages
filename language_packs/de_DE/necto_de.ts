@@ -4048,7 +4048,7 @@ Möchten Sie die Sicherheitsprüfung überschreiben und fortfahren?   </translat
         <translation type="unfinished">Wählen Sie die Sprache der NECTO-Studio-Oberfläche. Wird nach einem Neustart wirksam.</translation>
     </message>
     <message>
-        <location line="+7" />
+        <location line="+13" />
         <source>Enable animations</source>
         <translation>Animationen aktivieren</translation>
     </message>
@@ -4078,7 +4078,7 @@ Möchten Sie die Sicherheitsprüfung überschreiben und fortfahren?   </translat
         <translation>Änderungen werden nach einem Neustart von NECTO Studio sichtbar.</translation>
     </message>
     <message>
-        <location line="+49" />
+        <location line="+48" />
         <source>Appearance settings</source>
         <translation>Darstellungseinstellungen</translation>
     </message>
@@ -5110,6 +5110,26 @@ Möchten Sie die Sicherheitsprüfung überschreiben und fortfahren?   </translat
         <location line="+21" />
         <source>Please wait while packages are being installed...</source>
         <translation>Bitte warten Sie, während die Pakete installiert werden...</translation>
+    </message>
+    <message>
+        <location line="+40" />
+        <source>Downloading</source>
+        <translation>Wird heruntergeladen</translation>
+    </message>
+    <message>
+        <location line="+1" />
+        <source>Unpacking</source>
+        <translation>Wird entpackt</translation>
+    </message>
+    <message>
+        <location line="+1" />
+        <source>Updating installation record</source>
+        <translation>Installationsdatensatz wird aktualisiert</translation>
+    </message>
+    <message>
+        <location line="+2" />
+        <source>%1 %2...</source>
+        <translation>%1 %2...</translation>
     </message>
 </context>
 <context>
@@ -6766,7 +6786,7 @@ li.checked::marker { content: "\2612"; }
         <translation>Programmiergerät-Einstellungen öffnen</translation>
     </message>
     <message>
-        <location line="+599" />
+        <location line="+604" />
         <source>File</source>
         <translation>Datei</translation>
     </message>
@@ -6848,7 +6868,32 @@ li.checked::marker { content: "\2612"; }
     <message>
         <location filename="../plugins/mattermost_client/src/mattermost_view.ui" line="+14" />
         <source>Form</source>
-        <translation type="unfinished">Formular</translation>
+        <translation>Formular</translation>
+    </message>
+    <message>
+        <location filename="../plugins/mattermost_client/src/mattermost_view.cpp" line="+779" />
+        <source>Initializing NECTO Chat</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location line="+1" />
+        <source>Connecting to the chat service. This will only take a moment…</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location line="+15" />
+        <source>NECTO Chat is unavailable</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location line="+1" />
+        <source>The chat service could not be reached. It may be temporarily down or under maintenance. Please try again in a few minutes.</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location line="+31" />
+        <source>Retry</source>
+        <translation type="unfinished">Erneut versuchen</translation>
     </message>
 </context>
 <context>
@@ -13190,6 +13235,20 @@ li.checked::marker { content: "\2612"; }
     </message>
 </context>
 <context>
+    <name>Necto::Mattermost</name>
+    <message>
+        <source>NECTO Chat</source>
+        <translation>NECTO Chat</translation>
+    </message>
+</context>
+<context>
+    <name>Necto::MattermostView</name>
+    <message>
+        <source>Form</source>
+        <translation type="obsolete">Formular</translation>
+    </message>
+</context>
+<context>
     <name>Necto::McuSettingsView</name>
     <message>
         <source>Frame</source>
@@ -13851,7 +13910,7 @@ li.checked::marker { content: "\2612"; }
         <translation>Anmeldung bei Ihrem Konto...</translation>
     </message>
     <message>
-        <location line="+45" />
+        <location line="+44" />
         <source>Loading packages...</source>
         <translation>Pakete werden geladen...</translation>
     </message>
@@ -13901,7 +13960,7 @@ li.checked::marker { content: "\2612"; }
         <translation>Über NECTO Studio</translation>
     </message>
     <message>
-        <location line="+181" />
+        <location line="+192" />
         <source>Loading modules...</source>
         <translation>Module werden geladen...</translation>
     </message>
@@ -14781,6 +14840,14 @@ Bitte prüfen Sie Ihre Schreibweise.</translation>
     <message>
         <source>This feature is available only when a project is open.</source>
         <translation>Diese Funktion ist nur verfügbar, wenn ein Projekt geöffnet ist.</translation>
+    </message>
+    <message>
+        <source>Create example that combines %1</source>
+        <translation>Beispiel erstellen, das %1 kombiniert</translation>
+    </message>
+    <message>
+        <source>%1 on %2</source>
+        <translation>%1 auf %2</translation>
     </message>
 </context>
 <context>
@@ -20260,7 +20327,12 @@ Bitte prüfen Sie Ihre Schreibweise.</translation>
         <translation>Alles ist bereit. Was ist Ihr nächster Schritt?</translation>
     </message>
     <message>
-        <location line="+93" />
+        <location line="+65" />
+        <source>Create example that combines %1</source>
+        <translation>Beispiel erstellen, das %1 kombiniert</translation>
+    </message>
+    <message>
+        <location line="+28" />
         <source> on %1</source>
         <translation> auf %1</translation>
     </message>
@@ -20270,7 +20342,12 @@ Bitte prüfen Sie Ihre Schreibweise.</translation>
         <translation>Erstellen Sie ein Beispiel, in dem Daten von %1 auf %2%3 angezeigt werden. Stellen Sie sicher, dass das Board initialisiert ist und passende Interrupt-Routinen enthalten sind</translation>
     </message>
     <message>
-        <location line="+61" />
+        <location line="+18" />
+        <source>%1 on %2</source>
+        <translation>%1 auf %2</translation>
+    </message>
+    <message>
+        <location line="+43" />
         <source>This feature is available only when a project is open.</source>
         <translation>Diese Funktion ist nur verfügbar, wenn ein Projekt geöffnet ist.</translation>
     </message>
@@ -25287,17 +25364,17 @@ Möchten Sie die Seite neu laden?</translation>
     </message>
     <message>
         <location line="+36" />
-        <location line="+144" />
+        <location line="+148" />
         <source>Productivity Hub</source>
         <translation>Produktivitäts-Hub</translation>
     </message>
     <message>
-        <location line="-142" />
+        <location line="-146" />
         <source>Quick access to most important tools to boost your productivity.</source>
         <translation>Schneller Zugriff auf die wichtigsten Werkzeuge zur Steigerung Ihrer Produktivität.</translation>
     </message>
     <message>
-        <location line="+84" />
+        <location line="+88" />
         <source>Package manager</source>
         <translation>Paketmanager</translation>
     </message>
@@ -25502,14 +25579,6 @@ Möchten Sie die Seite neu laden?</translation>
     </message>
 </context>
 <context>
-    <name>Necto::Mattermost</name>
-    <message>
-        <location filename="../plugins/mattermost_client/src/mattermost.cpp" line="+25" />
-        <source>NECTO Chat</source>
-        <translation>NECTO Chat</translation>
-    </message>
-</context>
-<context>
     <name>Necto::DatabaseManager</name>
     <message>
         <location filename="../interfaces/src/database_manager/database_manager.cpp" line="+668" />
@@ -25520,14 +25589,6 @@ Möchten Sie die Seite neu laden?</translation>
         <location line="+1" />
         <source>Failed to initialize the database.</source>
         <translation type="unfinished" />
-    </message>
-</context>
-<context>
-    <name>Necto::MattermostView</name>
-    <message>
-        <location filename="../plugins/mattermost_client/src/mattermost_view.ui" line="+14" />
-        <source>Form</source>
-        <translation type="unfinished">Formular</translation>
     </message>
 </context>
 </TS>
